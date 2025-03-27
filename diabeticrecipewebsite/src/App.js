@@ -1,28 +1,6 @@
 import React from "react";
 
 function App() {
-<<<<<<< Updated upstream
-  return (
-    <div style={{ textAlign: "center", padding: "50px", fontFamily: "Arial" }}>
-      <h1>🍏 Diabetic-Friendly Recipe Finder</h1>
-      <p>Discover healthy meal alternatives for better glucose control.</p>
-
-      <button
-        onClick={() => alert("Feature Coming Soon!")}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-          marginTop: "20px",
-          borderRadius: "5px",
-        }}
-      >
-        Get Recipes
-      </button>
-=======
   const styles = {
     container: {
       position: "relative",
@@ -154,7 +132,7 @@ function App() {
         <div style={styles.skipContainer}>
           <button style={styles.skipButton}>Skip</button>
         </div>
-        <h1 style={styles.title}>Welcome to Salutem</h1>
+        <h1 style={styles.title}>Welcome to VitaMeal</h1>
         <p style={styles.subtitle}>
           Best Diabetic Food Recommendation
           <br />
@@ -179,7 +157,6 @@ function App() {
           </a>
         </p>
       </div>
->>>>>>> Stashed changes
     </div>
   );
 }
