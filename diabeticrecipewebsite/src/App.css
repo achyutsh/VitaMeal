@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .App {
   text-align: center;
 }
@@ -16,10 +17,40 @@
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
+=======
+.container {
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* Reference the image inside the public/images folder */
+  background-image: url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;
+}
+
+
+/* Dark overlay to improve text visibility */
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Content area */
+.content {
+  position: relative;
+  z-index: 1;
+>>>>>>> Stashed changes
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+<<<<<<< Updated upstream
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -34,5 +65,115 @@
   }
   to {
     transform: rotate(360deg);
+=======
+  height: 100vh;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Skip button container and styling */
+.skipContainer {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.skipButton {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Title styling with fade-in animation */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+}
+
+/* Subtitle styling with fade-in animation and delay */
+.subtitle {
+  font-size: 1rem;
+  margin-bottom: 40px;
+  line-height: 1.4;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+  animation-delay: 0.5s;
+}
+
+/* Social authentication buttons */
+.authButtons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.socialButton {
+  min-width: 120px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.facebook {
+  background-color: #3b5998;
+  color: #fff;
+}
+
+.google {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ddd;
+}
+
+.orText {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Email sign-in button */
+.emailButton {
+  background-color: #000;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  min-width: 240px;
+}
+
+/* Footer text */
+.footerText {
+  font-size: 14px;
+}
+
+.signInLink {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+>>>>>>> Stashed changes
   }
 }
