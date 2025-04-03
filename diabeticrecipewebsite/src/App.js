@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import Pag4 from "./pag4"; // ✅ this is your home screen
 
-function App() {
+// 🔐 Login Component
+function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
@@ -18,6 +22,7 @@ function App() {
       );
       console.log("Signed up:", userCredential.user);
       alert("Signed up successfully!");
+      navigate("/home");
     } catch (error) {
       alert("Error signing up: " + error.message);
     }
@@ -32,6 +37,7 @@ function App() {
       );
       console.log("Signed in:", userCredential.user);
       alert("Welcome back!");
+      navigate("/home");
     } catch (error) {
       alert("Error signing in: " + error.message);
     }
@@ -45,7 +51,7 @@ function App() {
       padding: 0,
       background: `url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg") center/cover no-repeat`,
       fontFamily: "Arial, sans-serif",
-      backgroundColor: "#111", // fallback
+      backgroundColor: "#111",
     },
     overlay: {
       position: "absolute",
@@ -148,7 +154,9 @@ function App() {
       <div style={styles.overlay}></div>
       <div style={styles.content}>
         <div style={styles.skipContainer}>
-          <button style={styles.skipButton}>Skip</button>
+          <button style={styles.skipButton} onClick={() => navigate("/home")}>
+            Skip
+          </button>
         </div>
         <h1 style={styles.title}>Welcome to VitaMeal</h1>
         <p style={styles.subtitle}>
@@ -186,6 +194,18 @@ function App() {
         </p>
       </div>
     </div>
+  );
+}
+
+// 🌐 Main App with Routing
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginScreen />} />
+        <Route path="/home" element={<Pag4 />} />
+      </Routes>
+    </Router>
   );
 }
 
