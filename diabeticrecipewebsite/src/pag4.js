@@ -123,7 +123,7 @@ const Pag4 = () => {
       <div style={styles.sectionTitle}>Featured Recipes</div>
 
       <div style={styles.recipeCard}>
-        <img src="/images/quinoa.jpg" alt="Quinoa" style={styles.recipeImage} />
+        <img src="/images/chickpea-quinoa-salad-with-feta.jpg" alt="Quinoa" style={styles.recipeImage} />
         <div style={styles.recipeText}>
           <b>Quinoa & Chickpea Salad</b>
           <p>
@@ -136,7 +136,7 @@ const Pag4 = () => {
       </div>
 
       <div style={styles.recipeCard}>
-        <img src="/images/chia.jpg" alt="Chia Pudding" style={styles.recipeImage} />
+        <img src="/images/chiapudding.jpg" alt="Chia Pudding" style={styles.recipeImage} />
         <div style={styles.recipeText}>
           <b>Chia Pudding with Almond Butter & Berries</b>
           <p>
