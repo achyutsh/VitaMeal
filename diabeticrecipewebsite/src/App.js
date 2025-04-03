@@ -1,17 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import { auth } from "./firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("Signed up:", userCredential.user);
+      alert("Signed up successfully!");
+    } catch (error) {
+      alert("Error signing up: " + error.message);
+    }
+  };
+
+  const handleSignIn = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("Signed in:", userCredential.user);
+      alert("Welcome back!");
+    } catch (error) {
+      alert("Error signing in: " + error.message);
+    }
+  };
+
   const styles = {
     container: {
       position: "relative",
       minHeight: "100vh",
       margin: 0,
       padding: 0,
-      // Reference the image relative to the public folder:
-      backgroundImage: 'url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg")',
-      backgroundSize: "cover",
-      backgroundPosition: "center",
+      background: `url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg") center/cover no-repeat`,
       fontFamily: "Arial, sans-serif",
+      backgroundColor: "#111", // fallback
     },
     overlay: {
       position: "absolute",
@@ -19,7 +53,7 @@ function App() {
       right: 0,
       bottom: 0,
       left: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.4)",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     content: {
       position: "relative",
@@ -51,43 +85,33 @@ function App() {
       fontSize: "2rem",
       fontWeight: "700",
       marginBottom: "10px",
-      opacity: 0,
       animation: "fadeIn 2s forwards",
     },
     subtitle: {
       fontSize: "1rem",
       marginBottom: "40px",
       lineHeight: 1.4,
-      opacity: 0,
       animation: "fadeIn 2s forwards",
       animationDelay: "0.5s",
     },
-    authButtons: {
+    emailInput: {
+      padding: "10px",
+      marginBottom: "10px",
+      borderRadius: "8px",
+      border: "1px solid #ccc",
+      minWidth: "240px",
+    },
+    passwordInput: {
+      padding: "10px",
+      marginBottom: "20px",
+      borderRadius: "8px",
+      border: "1px solid #ccc",
+      minWidth: "240px",
+    },
+    buttonGroup: {
       display: "flex",
       gap: "20px",
-      flexWrap: "wrap",
       justifyContent: "center",
-      marginBottom: "20px",
-    },
-    socialButton: {
-      minWidth: "120px",
-      padding: "12px 20px",
-      borderRadius: "25px",
-      border: "none",
-      fontSize: "16px",
-      cursor: "pointer",
-    },
-    facebook: {
-      backgroundColor: "#3b5998",
-      color: "#fff",
-    },
-    google: {
-      backgroundColor: "#fff",
-      color: "#000",
-      border: "1px solid #ddd",
-    },
-    orText: {
-      fontWeight: "bold",
       marginBottom: "20px",
     },
     emailButton: {
@@ -98,19 +122,13 @@ function App() {
       borderRadius: "25px",
       border: "none",
       cursor: "pointer",
-      marginBottom: "20px",
-      minWidth: "240px",
+      minWidth: "120px",
     },
     footerText: {
       fontSize: "14px",
     },
-    signInLink: {
-      color: "#fff",
-      textDecoration: "underline",
-    },
   };
 
-  // Inject keyframes animation using a <style> tag.
   const animationStyle = `
     @keyframes fadeIn {
       from {
@@ -138,23 +156,33 @@ function App() {
           <br />
           and Quick Recipes
         </p>
-        <div style={styles.authButtons}>
-          <button style={{ ...styles.socialButton, ...styles.facebook }}>
-            Facebook
+
+        <input
+          type="email"
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.emailInput}
+        />
+        <input
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.passwordInput}
+        />
+
+        <div style={styles.buttonGroup}>
+          <button style={styles.emailButton} onClick={handleSignUp}>
+            Sign Up
           </button>
-          <button style={{ ...styles.socialButton, ...styles.google }}>
-            Google
+          <button style={styles.emailButton} onClick={handleSignIn}>
+            Sign In
           </button>
         </div>
-        <p style={styles.orText}>or</p>
-        <button style={styles.emailButton}>
-          Start with email or phone
-        </button>
+
         <p style={styles.footerText}>
-          Already have an account?{" "}
-          <a href="#" style={styles.signInLink}>
-            Sign In
-          </a>
+          (Use the same credentials to sign in again)
         </p>
       </div>
     </div>
