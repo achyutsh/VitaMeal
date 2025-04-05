@@ -6,6 +6,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import Pag4 from "./pag4"; // ✅ this is your home screen
+import Pag5 from "./pag5";
+import Pag6 from "./pag6";
 
 // 🔐 Login Component
 function LoginScreen() {
@@ -204,6 +206,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginScreen />} />
         <Route path="/home" element={<Pag4 />} />
+        <Route path="/page5" element={<Pag5 />} />
+        <Route path="/page6" element={<Pag6 />} />
       </Routes>
     </Router>
   );

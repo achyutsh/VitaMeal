@@ -1,168 +1,183 @@
-import React, { useEffect, useState } from "react";
-import { auth } from "./firebase";
+import React from "react";
+import { Link } from "react-router-dom";
+import { colors, fonts, sharedStyles, effects } from "./theme";
 
 const Pag4 = () => {
-  const [userEmail, setUserEmail] = useState("");
-
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUserEmail(user.email);
-    }
-  }, []);
-
   const styles = {
     container: {
+      fontFamily: fonts.primary,
+      backgroundColor: colors.secondary,
       padding: "20px",
-      fontFamily: "Arial, sans-serif",
-      backgroundColor: "#fff",
       minHeight: "100vh",
+      display: "grid",
+      gridTemplateColumns: "2fr 1fr",
+      gap: "20px",
     },
-    header: {
-      backgroundColor: "#f29c7e",
-      padding: "10px 20px",
-      borderRadius: "10px",
+    column: {
       display: "flex",
-      justifyContent: "space-between",
+      flexDirection: "column",
+      gap: "20px",
+    },
+    card: {
+      backgroundColor: "#fff",
+      borderRadius: effects.borderRadius,
+      padding: "20px",
+      boxShadow: effects.cardShadow,
+    },
+    greeting: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+    },
+    greetingTitle: {
+      fontSize: "20px",
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    statRow: {
+      display: "flex",
+      gap: "20px",
+      fontSize: "14px",
+      color: colors.muted,
+    },
+    alertCard: {
+      backgroundColor: "#fff4e5",
+      padding: "15px",
+      borderRadius: "10px",
+      fontSize: "14px",
+      boxShadow: effects.cardShadow,
+    },
+    circularGoal: {
+      display: "flex",
+      flexDirection: "column",
       alignItems: "center",
-      color: "#fff",
-      fontWeight: "bold",
-      fontSize: "18px",
-      marginBottom: "20px",
-    },
-    avatar: {
-      width: "35px",
-      height: "35px",
+      justifyContent: "center",
+      border: "6px solid #4caf50",
       borderRadius: "50%",
-    },
-    sectionTitle: {
+      width: "100px",
+      height: "100px",
+      fontSize: "18px",
       fontWeight: "bold",
-      fontSize: "16px",
-      marginBottom: "10px",
+      color: "#4caf50",
+      margin: "0 auto",
+    },
+    mealPlanner: {
+      display: "flex",
+      gap: "10px",
+      flexWrap: "wrap",
+    },
+    pill: {
+      padding: "8px 16px",
+      backgroundColor: colors.accent,
+      color: "#fff",
+      borderRadius: "20px",
+      fontSize: "14px",
+      fontWeight: "bold",
+      border: "none",
+      cursor: "pointer",
     },
     recipeCard: {
       display: "flex",
       gap: "10px",
       marginBottom: "15px",
-      border: "1px solid #ddd",
-      borderRadius: "10px",
-      padding: "10px",
       alignItems: "center",
     },
     recipeImage: {
-      width: "70px",
-      height: "70px",
-      borderRadius: "10px",
+      width: "60px",
+      height: "60px",
+      borderRadius: "8px",
       objectFit: "cover",
     },
-    recipeText: {
+    recipeInfo: {
       flex: 1,
-    },
-    saveButton: {
-      backgroundColor: "green",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      padding: "6px 12px",
-      cursor: "pointer",
-    },
-    actionButtons: {
-      display: "flex",
-      justifyContent: "space-around",
-      marginTop: "20px",
-      marginBottom: "20px",
-    },
-    actionButton: {
-      backgroundColor: "#ff3b3f",
-      color: "#fff",
-      border: "none",
-      padding: "10px",
-      borderRadius: "8px",
-      display: "flex",
-      alignItems: "center",
-      fontWeight: "bold",
-      cursor: "pointer",
-      gap: "5px",
-    },
-    searchContainer: {
-      display: "flex",
-      alignItems: "center",
-      border: "1px solid #ccc",
-      borderRadius: "25px",
-      padding: "8px 15px",
-      backgroundColor: "#f29c7e",
-    },
-    searchInput: {
-      flex: 1,
-      border: "none",
-      outline: "none",
-      backgroundColor: "transparent",
       fontSize: "14px",
     },
-    micIcon: {
-      marginLeft: "10px",
-      cursor: "pointer",
-    },
-    helpText: {
-      color: "green",
-      textAlign: "center",
-      marginTop: "20px",
+    recipeTitle: {
       fontWeight: "bold",
+    },
+    savedBox: {
+      backgroundColor: "#fff",
+      borderRadius: effects.borderRadius,
+      padding: "15px",
+      boxShadow: effects.cardShadow,
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+    },
+    searchBar: {
+      width: "100%",
+      padding: "12px",
+      borderRadius: "25px",
+      border: "none",
+      backgroundColor: colors.primary,
+      color: "#fff",
+      fontSize: "14px",
+      marginTop: "auto",
     },
   };
 
   return (
     <div style={styles.container}>
-      <div style={styles.header}>
-        <span>
-          Hello {userEmail ? userEmail.split("@")[0] : "there"} !!
-        </span>
-        <img src="/images/avatar.jpg" alt="Profile" style={styles.avatar} />
-      </div>
-
-      <div style={styles.sectionTitle}>Featured Recipes</div>
-
-      <div style={styles.recipeCard}>
-        <img src="/images/chickpea-quinoa-salad-with-feta.jpg" alt="Quinoa" style={styles.recipeImage} />
-        <div style={styles.recipeText}>
-          <b>Quinoa & Chickpea Salad</b>
-          <p>
-            A nutrient-packed, protein-rich salad that's both filling and low on the glycemic index.
-            <br />
-            <a href="#">Click here for full recipe !!</a>
-          </p>
+      {/* Left Column */}
+      <div style={styles.column}>
+        <div style={styles.card}>
+          <div style={styles.greeting}>
+            <div style={styles.greetingTitle}>👋 Hello<br />Good Morning, pawahar</div>
+            <div style={styles.statRow}>
+              <span>0 kcal Left</span>
+              <span>12g Sugar</span>
+              <span>0 cups Water</span>
+            </div>
+          </div>
         </div>
-        <button style={styles.saveButton}>SAVE</button>
-      </div>
 
-      <div style={styles.recipeCard}>
-        <img src="/images/chiapudding.jpg" alt="Chia Pudding" style={styles.recipeImage} />
-        <div style={styles.recipeText}>
-          <b>Chia Pudding with Almond Butter & Berries</b>
-          <p>
-            A perfect diabetic-friendly breakfast or snack that is rich in fiber and healthy fats.
-            <br />
-            <a href="#">Click here for full recipe !!</a>
-          </p>
+        <div style={styles.card}>
+          <div style={styles.alertCard}>🍊 Missed breakfast? Try adding lemon to your water instead of juice.</div>
         </div>
-        <button style={styles.saveButton}>SAVE</button>
+
+        <div style={styles.card}>
+          <div style={styles.mealPlanner}>
+            <button style={styles.pill}>Breakfast</button>
+            <button style={styles.pill}>Lunch</button>
+            <button style={styles.pill}>Dinner</button>
+            <button style={styles.pill}>Snack</button>
+          </div>
+        </div>
+
+        <div style={styles.card}>
+          <h3>🍽️ Featured Recipes</h3>
+          <div style={styles.recipeCard}>
+            <img src="/images/quinoa.jpg" alt="Quinoa" style={styles.recipeImage} />
+            <div style={styles.recipeInfo}>
+              <div style={styles.recipeTitle}>Quinoa & Chickpea Salad</div>
+              <Link to="/page6">Click here for full recipe</Link>
+            </div>
+          </div>
+          <div style={styles.recipeCard}>
+            <img src="/images/chiapudding.jpg" alt="Chia" style={styles.recipeImage} />
+            <div style={styles.recipeInfo}>
+              <div style={styles.recipeTitle}>Chia Pudding with Almond Butter & Berries</div>
+              <Link to="/page5">Click here for full recipe</Link>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div style={styles.actionButtons}>
-        <button style={styles.actionButton}>📋 Substitutions</button>
-        <button style={styles.actionButton}>📁 Saved Recipes</button>
-      </div>
+      {/* Right Column */}
+      <div style={styles.column}>
+        <div style={styles.card}>
+          <div style={styles.circularGoal}>50%</div>
+          <p style={{ textAlign: "center", marginTop: "10px" }}>You're 50% to your goal!</p>
+        </div>
 
-      <div style={styles.searchContainer}>
-        <input
-          type="text"
-          placeholder="Search recipes"
-          style={styles.searchInput}
-        />
-        <span style={styles.micIcon}>🎤</span>
-      </div>
+        <div style={styles.savedBox}>
+          <h4>📁 Saved Recipes</h4>
+          <img src="/images/quinoa.jpg" alt="saved" style={styles.recipeImage} />
+          <img src="/images/chiapudding.jpg" alt="saved" style={styles.recipeImage} />
+        </div>
 
-      <div style={styles.helpText}>Need Assistance ??</div>
+        <input style={styles.searchBar} placeholder="Search recipes" />
+      </div>
     </div>
   );
 };
