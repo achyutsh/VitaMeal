@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import Pag2 from "./pag2";
 import Pag4 from "./pag4"; // ✅ this is your home screen
 import Pag5 from "./pag5";
 import Pag6 from "./pag6";
@@ -16,6 +17,10 @@ function LoginScreen() {
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
+    if (!email || !password) {
+      alert("Please enter a valid email and password.");
+      return;
+    }
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -24,10 +29,12 @@ function LoginScreen() {
       );
       console.log("Signed up:", userCredential.user);
       alert("Signed up successfully!");
-      navigate("/home");
+      navigate("/userinfo");
     } catch (error) {
-      alert("Error signing up: " + error.message);
+      alert("Please enter a valid email and password.");
     }
+    // Temporarily hold email/password and pass it to Page 2
+    navigate("/userinfo", { state: { email, password } });
   };
 
   const handleSignIn = async () => {
@@ -205,6 +212,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginScreen />} />
+        <Route path="/userinfo" element={<Pag2 />} />
         <Route path="/home" element={<Pag4 />} />
         <Route path="/page5" element={<Pag5 />} />
         <Route path="/page6" element={<Pag6 />} />
