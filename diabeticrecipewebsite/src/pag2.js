@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "./firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from "./firebase"; // 🔁 Get Firestore instance
-import { doc, setDoc } from "firebase/firestore"; // 🔁 For saving user data
-
+// Removed createUserWithEmailAndPassword import because we don't create a new user here
+import { db } from "./firebase"; // Get Firestore instance
+import { doc, setDoc } from "firebase/firestore"; // For saving user data
 
 const Pag2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Access email & password passed from LoginScreen
+  // Access email & password passed from previous page (for potential sign in, if needed)
   const email = location.state?.email;
   const password = location.state?.password;
 
@@ -57,11 +56,14 @@ const Pag2 = () => {
     e.preventDefault();
   
     try {
-      // Step 1: Create user
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      // Instead of creating the user again, use the current authenticated user.
+      const user = auth.currentUser;
+      if (!user) {
+        alert("User is not logged in. Please sign up or sign in again.");
+        return;
+      }
   
-      // Step 2: Save form data in Firestore
+      // Save form data in Firestore using the existing user's UID
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
@@ -76,7 +78,6 @@ const Pag2 = () => {
     }
   };
   
-
   const styles = {
     container: {
       minHeight: "100vh",
