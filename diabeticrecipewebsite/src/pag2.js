@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "./firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "./firebase"; // 🔁 Get Firestore instance
+import { doc, setDoc } from "firebase/firestore"; // 🔁 For saving user data
+
 
 const Pag2 = () => {
   const navigate = useNavigate();
@@ -52,17 +55,27 @@ const Pag2 = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
-      // ✅ Create user in Firebase Auth only after full form submission
+      // Step 1: Create user
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("User created:", userCredential.user);
-
+      const user = userCredential.user;
+  
+      // Step 2: Save form data in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        ...formData,
+        createdAt: new Date(),
+      });
+  
       alert("Information saved successfully!");
       navigate("/home");
     } catch (error) {
       alert("Error saving user: " + error.message);
     }
   };
+  
 
   const styles = {
     container: {
