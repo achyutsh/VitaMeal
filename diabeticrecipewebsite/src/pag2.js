@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "./firebase";
-// Removed createUserWithEmailAndPassword import because we don't create a new user here
-import { db } from "./firebase"; // Get Firestore instance
-import { doc, setDoc } from "firebase/firestore"; // For saving user data
+import { db } from "./firebase"; // For Firestore
+import { doc, setDoc } from "firebase/firestore";
 
 const Pag2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Access email & password passed from previous page (for potential sign in, if needed)
+  // Get email & password passed from the previous page
   const email = location.state?.email;
   const password = location.state?.password;
 
@@ -54,42 +53,45 @@ const Pag2 = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      // Instead of creating the user again, use the current authenticated user.
+      // Use the current authenticated user.
       const user = auth.currentUser;
       if (!user) {
         alert("User is not logged in. Please sign up or sign in again.");
         return;
       }
-  
-      // Save form data in Firestore using the existing user's UID
+
+      // Save form data in Firestore using the user's UID.
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
         ...formData,
         createdAt: new Date(),
       });
-  
+
       alert("Information saved successfully!");
       navigate("/home");
     } catch (error) {
       alert("Error saving user: " + error.message);
     }
   };
-  
+
   const styles = {
     container: {
-      minHeight: "100vh",
-      background: `url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg") center/cover no-repeat`,
-      padding: "30px",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      position: "relative",
+      margin: 0,
+      padding: "50px",
+      background: `url("/images/animation.gif") no-repeat`,
+      backgroundSize: "40%",
+      backgroundPosition: "90% center",
+      backgroundColor: "#fff", // Whole page background is white.
       fontFamily: "Arial, sans-serif",
+      minHeight: "100vh", // Minimum height is full viewport.
+      overflowY: "auto",  // Enable vertical scrolling if content exceeds viewport.
     },
     overlay: {
-      backgroundColor: "rgba(0,0,0,0.7)",
+      backgroundColor: "#333",  // Dark overlay to ensure form readability.
       padding: "30px",
       borderRadius: "20px",
       color: "#fff",
@@ -107,6 +109,7 @@ const Pag2 = () => {
       fontWeight: "bold",
       marginTop: "10px",
       display: "block",
+      color: "#fff", // Labels appear in white on the dark overlay.
     },
     button: {
       marginTop: "20px",
@@ -123,7 +126,7 @@ const Pag2 = () => {
   return (
     <div style={styles.container}>
       <div style={styles.overlay}>
-        <h2>User Information</h2>
+        <h2>Let's get to know you!</h2>
         <form onSubmit={handleSubmit}>
           <label style={styles.label}>First Name</label>
           <input
@@ -192,14 +195,6 @@ const Pag2 = () => {
             <option value="Type 1 diabetes">Type 1 diabetes</option>
             <option value="Type 2 diabetes">Type 2 diabetes</option>
             <option value="Gestational diabetes">Gestational diabetes</option>
-            <option value="Maturity onset diabetes of the young (MODY)">MODY</option>
-            <option value="Neonatal diabetes">Neonatal diabetes</option>
-            <option value="Wolfram Syndrome">Wolfram Syndrome</option>
-            <option value="Alström Syndrome">Alström Syndrome</option>
-            <option value="LADA">Latent Autoimmune Diabetes in Adults (LADA)</option>
-            <option value="Type 3c diabetes">Type 3c diabetes</option>
-            <option value="Steroid-induced diabetes">Steroid-induced diabetes</option>
-            <option value="Cystic fibrosis diabetes">Cystic fibrosis diabetes</option>
           </select>
 
           <label style={styles.label}>Year Diagnosed</label>
@@ -267,18 +262,27 @@ const Pag2 = () => {
           </select>
 
           <label style={styles.label}>Food Allergies</label>
-          <input
-            type="text"
+          <select
             name="foodAllergies"
             value={formData.foodAllergies}
             onChange={handleChange}
             style={styles.input}
-          />
+            required
+          >
+            <option value="">Select</option>
+            <option value="Gluten">Gluten</option>
+            <option value="Dairy">Dairy</option>
+            <option value="Soy">Soy</option>
+            <option value="Nuts">Nuts</option>
+            <option value="None">None</option>
+          </select>
 
           <button type="submit" style={styles.button}>
             Submit & Continue
           </button>
         </form>
+        {/* Temporary dummy element to test scrolling if needed */}
+        {/* <div style={{ height: "150vh" }}>Scroll Test</div> */}
       </div>
     </div>
   );

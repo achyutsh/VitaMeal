@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
@@ -9,6 +9,9 @@ import Pag2 from "./pag2";
 import Pag4 from "./pag4"; // ✅ this is your home screen
 import Pag5 from "./pag5";
 import Pag6 from "./pag6";
+import './App.css';
+import RecipeDetails from "./RecipeDetails";
+
 
 // 🔐 Login Component
 function LoginScreen() {
@@ -29,12 +32,10 @@ function LoginScreen() {
       );
       console.log("Signed up:", userCredential.user);
       alert("Signed up successfully!");
-      navigate("/userinfo");
+      navigate("/userinfo", { state: { email, password } });
     } catch (error) {
       alert("Please enter a valid email and password.");
     }
-    // Temporarily hold email/password and pass it to Page 2
-    navigate("/userinfo", { state: { email, password } });
   };
 
   const handleSignIn = async () => {
@@ -216,6 +217,7 @@ function App() {
         <Route path="/home" element={<Pag4 />} />
         <Route path="/page5" element={<Pag5 />} />
         <Route path="/page6" element={<Pag6 />} />
+        <Route path="/:name" element={<RecipeDetails />} /> {/* 👈 Dynamic route for recipes */}
       </Routes>
     </Router>
   );

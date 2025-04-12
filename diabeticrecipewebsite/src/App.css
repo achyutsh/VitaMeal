@@ -1,34 +1,11 @@
-<<<<<<< Updated upstream
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-=======
-.container {
-  position: relative;
-  min-height: 100vh;
+/* Global reset */
+body {
   margin: 0;
   padding: 0;
-  /* Reference the image inside the public/images folder */
-  background-image: url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg");
-  background-size: cover;
-  background-position: center;
   font-family: Arial, sans-serif;
 }
+
+/* Container-based layout with background image */
 
 
 /* Dark overlay to improve text visibility */
@@ -41,35 +18,47 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Content area */
+/* Content area styling */
 .content {
   position: relative;
   z-index: 1;
->>>>>>> Stashed changes
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-<<<<<<< Updated upstream
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100vh;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
 }
 
+/* App related styles (if used) */
+.App {
+  text-align: center;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+}
 .App-link {
   color: #61dafb;
 }
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
-=======
-  height: 100vh;
-  color: #fff;
-  text-align: center;
-  padding: 20px;
+  }
 }
 
 /* Skip button container and styling */
@@ -89,7 +78,7 @@
   font-weight: bold;
 }
 
-/* Title styling with fade-in animation */
+/* Title and subtitle styling with fade-in animation */
 .title {
   font-size: 2rem;
   font-weight: 700;
@@ -98,7 +87,6 @@
   animation: fadeIn 2s forwards;
 }
 
-/* Subtitle styling with fade-in animation and delay */
 .subtitle {
   font-size: 1rem;
   margin-bottom: 40px;
@@ -155,6 +143,11 @@
   min-width: 240px;
 }
 
+/* Search bar input placeholder styling */
+.searchBarInput::placeholder {
+  color: #fff !important;
+}
+
 /* Footer text */
 .footerText {
   font-size: 14px;
@@ -174,6 +167,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
->>>>>>> Stashed changes
   }
 }
