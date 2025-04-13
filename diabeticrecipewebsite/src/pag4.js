@@ -4,7 +4,7 @@ import { colors, fonts, effects } from "./theme";
 import { auth, db } from "./firebase";
 import { getDoc, doc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
- 
+
 const Pag4 = () => {
   const [substitutes, setSubstitutes] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
@@ -15,54 +15,44 @@ const Pag4 = () => {
   ]);
   const chatContainerRef = useRef(null);
   const navigate = useNavigate();
- 
-  // 🔐 Logout handler
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate("/"); // Redirect to login
+      navigate("/");
     } catch (error) {
       alert("Error signing out: " + error.message);
     }
   };
- 
+
   const sendMessage = async () => {
     if (!chatInput.trim()) return;
- 
     const userMessage = { from: "user", text: chatInput };
     setMessages((prev) => [...prev, userMessage]);
     setChatInput("");
- 
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: chatInput }),
       });
- 
       const data = await response.json();
       setMessages((prev) => [...prev, { from: "bot", text: data.reply }]);
- 
       setTimeout(() => {
         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
       }, 100);
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        { from: "bot", text: "⚠️ Sorry, something went wrong." },
-      ]);
+      setMessages((prev) => [...prev, { from: "bot", text: "⚠️ Sorry, something went wrong." }]);
     }
   };
- 
+
   useEffect(() => {
     fetch("/substitutes.json")
       .then((response) => response.json())
       .then((data) => setSubstitutes(data))
-      .catch((error) =>
-        console.error("Error fetching local substitutes JSON:", error)
-      );
+      .catch((error) => console.error("Error fetching local substitutes JSON:", error));
   }, []);
- 
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -82,10 +72,9 @@ const Pag4 = () => {
         console.error("Error fetching user info:", error);
       }
     };
- 
     fetchUserInfo();
   }, []);
- 
+
   const filteredSubstitutes = userInfo
     ? substitutes.filter(
         (item) =>
@@ -95,19 +84,18 @@ const Pag4 = () => {
             userInfo.foodAllergies.toLowerCase().trim()
       )
     : substitutes;
- 
+
   const handleSubstituteClick = (substitute) => {
-    const routeName = substitute.originalIngredientName
-      .toLowerCase()
-      .replace(/\s+/g, "");
+    const routeName = substitute.originalIngredientName.toLowerCase().replace(/\s+/g, "");
     navigate(`/${routeName}`);
   };
- 
+
   const styles = {
+    ...effects,
     container: {
       fontFamily: fonts.primary,
       backgroundColor: colors.secondary,
-      padding: "20px",
+      padding: "30px",
       minHeight: "100vh",
       display: "grid",
       gridTemplateColumns: "2fr 1fr",
@@ -138,13 +126,38 @@ const Pag4 = () => {
       padding: "20px",
       boxShadow: effects.cardShadow,
     },
+    substitutesCard: {
+      backgroundColor: "#fff",
+      borderRadius: effects.borderRadius,
+      padding: "20px",
+      boxShadow: effects.cardShadow,
+    },
+    substituteGrid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(4, 1fr)",
+      gap: "16px",
+      marginTop: "20px",
+    },
+    substituteItem: {
+      padding: "20px",
+      backgroundColor: "#fdfdfd",
+      borderRadius: "14px",
+      cursor: "pointer",
+      boxShadow: "0 3px 8px rgba(0,0,0,0.08)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "15px",
+      letterSpacing: "0.3px",
+      lineHeight: "1.4",
+    },
     greeting: {
       display: "flex",
       flexDirection: "column",
       gap: "10px",
     },
     greetingTitle: {
-      fontSize: "20px",
+      fontSize: "24px",
       fontWeight: "bold",
       color: colors.text,
     },
@@ -175,30 +188,25 @@ const Pag4 = () => {
       color: "#4caf50",
       margin: "0 auto",
     },
-    mealPlanner: {
+    savedBox: {
+      backgroundColor: "#fff",
+      borderRadius: effects.borderRadius,
+      padding: "15px",
+      boxShadow: effects.cardShadow,
       display: "flex",
+      flexDirection: "column",
       gap: "10px",
-      flexWrap: "wrap",
-    },
-    pill: {
-      padding: "8px 16px",
-      backgroundColor: colors.accent,
-      color: "#fff",
-      borderRadius: "20px",
-      fontSize: "14px",
-      fontWeight: "bold",
-      border: "none",
-      cursor: "pointer",
     },
     recipeCard: {
       display: "flex",
       gap: "10px",
       marginBottom: "15px",
       alignItems: "center",
+      cursor: "pointer",
     },
     recipeImage: {
-      width: "150px",
-      height: "150px",
+      width: "100px",
+      height: "100px",
       borderRadius: "8px",
       objectFit: "cover",
     },
@@ -209,86 +217,80 @@ const Pag4 = () => {
     recipeTitle: {
       fontWeight: "bold",
     },
-    savedBox: {
+    chatButton: {
+      position: "fixed",
+      bottom: "30px",
+      right: "30px",
+      backgroundColor: "#000",
+      color: "#fff",
+      padding: "10px 20px",
+      borderRadius: "50px",
+      border: "none",
+      cursor: "pointer",
+      zIndex: 999,
+    },
+    chatBox: {
+      position: "fixed",
+      bottom: "100px",
+      right: "30px",
+      width: "300px",
+      maxHeight: "400px",
       backgroundColor: "#fff",
-      borderRadius: effects.borderRadius,
-      padding: "15px",
-      boxShadow: effects.cardShadow,
+      borderRadius: "10px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
       display: "flex",
       flexDirection: "column",
-      gap: "10px",
+      overflow: "hidden",
+      zIndex: 998,
     },
-    searchBar: {
-      width: "100%",
-      padding: "12px",
-      borderRadius: "25px",
-      border: "none",
-      backgroundColor: colors.primary,
-      color: "#fff",
-      fontSize: "14px",
-      marginTop: "auto",
-    },
-    substitutesCard: {
-      backgroundColor: "#fff",
-      borderRadius: effects.borderRadius,
-      padding: "20px",
-      boxShadow: effects.cardShadow,
-    },
-    substituteItem: {
+    chatMessages: {
+      flex: 1,
       padding: "10px",
-      borderBottom: "1px solid #ddd",
+      overflowY: "auto",
+    },
+    chatInputWrapper: {
+      borderTop: "1px solid #eee",
+      display: "flex",
+    },
+    chatInput: {
+      flex: 1,
+      border: "none",
+      padding: "10px",
+      outline: "none",
+    },
+    chatSend: {
+      border: "none",
+      padding: "10px",
+      backgroundColor: colors.accent,
+      color: "white",
       cursor: "pointer",
     },
   };
- 
+
   return (
     <div style={styles.container}>
       <button style={styles.logoutBtn} onClick={handleLogout}>Logout</button>
- 
-      {/* Left Column */}
+
       <div style={styles.column}>
         <div style={styles.card}>
           <div style={styles.greeting}>
-            <div style={styles.greetingTitle}>
-              👋 Hello
-              <br />
-              Good Morning, {userInfo ? userInfo.firstName : "Guest"}
-            </div>
-            <div style={styles.statRow}>
-              <span>0 kcal Left</span>
-              <span>12g Sugar</span>
-              <span>0 cups Water</span>
-            </div>
+            <div style={styles.greetingTitle}>👋 Hello<br />Good Morning, {userInfo ? userInfo.firstName : "Guest"}</div>
+            <div style={styles.statRow}><span>0 kcal Left</span><span>12g Sugar</span><span>0 cups Water</span></div>
           </div>
         </div>
- 
-        <div style={styles.card}>
-          <div style={styles.alertCard}>
-            🍊 Every healthy choice you make is a step toward a brighter, empowered future—keep thriving, because you have the power to transform your health!
-          </div>
-        </div>
- 
-        <input style={styles.searchBar} placeholder="Search recipes" />
- 
-        <div style={styles.card}>
-          <div style={styles.mealPlanner}>
-            <button style={styles.pill}>Breakfast</button>
-            <button style={styles.pill}>Lunch</button>
-            <button style={styles.pill}>Dinner</button>
-            <button style={styles.pill}>Snack</button>
-          </div>
-        </div>
- 
+
+        <div style={styles.card}><div style={styles.alertCard}>🍊 Every healthy choice you make is a step toward a brighter, empowered future—keep thriving, because you have the power to transform your health!</div></div>
+
         <div style={styles.card}>
           <h3>Try these today!</h3>
-          <div style={styles.recipeCard}>
+          <div style={styles.recipeCard} onClick={() => navigate("/quinoa")}>
             <img src="/images/quinoa.jpg" alt="Quinoa" style={styles.recipeImage} />
             <div style={styles.recipeInfo}>
               <div style={styles.recipeTitle}>Quinoa & Chickpea Salad</div>
               <span>Click to view full recipe</span>
             </div>
           </div>
-          <div style={styles.recipeCard}>
+          <div style={styles.recipeCard} onClick={() => navigate("/chiapudding")}>
             <img src="/images/chiapudding.jpg" alt="Chia" style={styles.recipeImage} />
             <div style={styles.recipeInfo}>
               <div style={styles.recipeTitle}>Chia Pudding with Almond Butter & Berries</div>
@@ -296,45 +298,76 @@ const Pag4 = () => {
             </div>
           </div>
         </div>
- 
+
         <div style={styles.substitutesCard}>
-          <h3>Some More Options For You!</h3>
-          <h2>Don't worry, we know your diet preferences. You can trust us.</h2>
-          {filteredSubstitutes.length > 0 ? (
-            filteredSubstitutes.map((item, index) => (
-              <div
-                key={index}
-                style={styles.substituteItem}
-                onClick={() => handleSubstituteClick(item)}
-              >
-                {item.originalIngredientName}
-              </div>
-            ))
-          ) : (
-            <p>No substitutes found based on your preferences.</p>
-          )}
+          <h3>Healthy Ingredient Swaps Just For You!</h3>
+          <p>Tap on any item below to view a diabetes-friendly alternative based on your preferences.</p>
+          <div style={styles.substituteGrid}>
+            {filteredSubstitutes.length > 0 ? (
+              filteredSubstitutes.map((item, index) => (
+                <div
+                  key={index}
+                  style={styles.substituteItem}
+                  onClick={() => handleSubstituteClick(item)}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px) scale(1.02)";
+                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.12)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.transform = "none";
+                    e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+                  }}
+                >
+                  {item.originalIngredientName}
+                </div>
+              ))
+            ) : (
+              <p>No substitutes found based on your preferences.</p>
+            )}
+          </div>
         </div>
       </div>
- 
-      {/* Right Column */}
+
       <div style={styles.column}>
         <div style={styles.card}>
           <div style={styles.circularGoal}>50%</div>
-          <p style={{ textAlign: "center", marginTop: "10px" }}>
-            You're 50% to your goal!
-          </p>
+          <p style={{ textAlign: "center", marginTop: "10px" }}>You're 50% to your goal!</p>
         </div>
- 
+
         <div style={styles.savedBox}>
           <h4>📁 Saved Recipes</h4>
-          <img src="/images/quinoa.jpg" alt="saved" style={styles.recipeImage} />
+          <img src="/images/quinoa.jpg" alt="saved" style={{ width: "80px", borderRadius: "8px" }} />
         </div>
       </div>
- 
-      {/* Chatbot Button & Box preserved from your version */}
-      {/* ... (No change needed) */}
+
+      <button style={styles.chatButton} onClick={() => setChatOpen(!chatOpen)}>
+        {chatOpen ? "Close Chat" : "💬 Chat"}
+      </button>
+
+      {chatOpen && (
+        <div style={styles.chatBox}>
+          <div style={styles.chatMessages} ref={chatContainerRef}>
+            {messages.map((msg, i) => (
+              <div key={i} style={{ marginBottom: "8px", textAlign: msg.from === "bot" ? "left" : "right" }}>
+                <span>{msg.text}</span>
+              </div>
+            ))}
+          </div>
+          <div style={styles.chatInputWrapper}>
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              style={styles.chatInput}
+              placeholder="Type a message..."
+            />
+            <button onClick={sendMessage} style={styles.chatSend}>Send</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
- 
+
 export default Pag4;
