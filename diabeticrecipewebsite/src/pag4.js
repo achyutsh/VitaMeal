@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { colors, fonts, effects } from "./theme";
 import { auth, db } from "./firebase";
@@ -8,6 +8,42 @@ const Pag4 = () => {
   const [substitutes, setSubstitutes] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
+
+  // ✅ Chatbot States
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [messages, setMessages] = useState([
+    { from: "bot", text: "👋 Hey there! Want to try something new today?" },
+  ]);
+  const chatContainerRef = useRef(null);
+
+  const sendMessage = async () => {
+    if (!chatInput.trim()) return;
+
+    const userMessage = { from: "user", text: chatInput };
+    setMessages((prev) => [...prev, userMessage]);
+    setChatInput("");
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: chatInput }),
+      });
+
+      const data = await response.json();
+      setMessages((prev) => [...prev, { from: "bot", text: data.reply }]);
+
+      setTimeout(() => {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }, 100);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { from: "bot", text: "⚠️ Sorry, something went wrong." },
+      ]);
+    }
+  };
 
   useEffect(() => {
     fetch("/substitutes.json")
@@ -267,6 +303,96 @@ const Pag4 = () => {
           <img src="/images/quinoa.jpg" alt="saved" style={styles.recipeImage} />
         </div>
       </div>
+
+      {/* Chatbot Toggle Button */}
+      <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 999 }}>
+        <button
+          style={{
+            backgroundColor: "#4caf50",
+            color: "#fff",
+            border: "none",
+            borderRadius: "50%",
+            width: 60,
+            height: 60,
+            fontSize: 24,
+            cursor: "pointer",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          }}
+          onClick={() => setChatOpen((prev) => !prev)}
+        >
+          💬
+        </button>
+      </div>
+
+      {/* Chatbot Box */}
+      {chatOpen && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 90,
+            right: 20,
+            width: 300,
+            height: 400,
+            backgroundColor: "#fff",
+            borderRadius: 12,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            zIndex: 999,
+          }}
+        >
+          <div style={{ padding: 10, backgroundColor: "#4caf50", color: "#fff", fontWeight: "bold" }}>
+            🍽️ VitaMeal Assistant
+          </div>
+          <div
+            ref={chatContainerRef}
+            style={{
+              flex: 1,
+              padding: 10,
+              overflowY: "auto",
+              fontSize: "14px",
+            }}
+          >
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                style={{
+                  margin: "8px 0",
+                  alignSelf: msg.from === "user" ? "flex-end" : "flex-start",
+                  backgroundColor: msg.from === "user" ? "#e0f7fa" : "#f1f8e9",
+                  padding: "8px 12px",
+                  borderRadius: "10px",
+                  maxWidth: "80%",
+                }}
+              >
+                {msg.text}
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", borderTop: "1px solid #ccc" }}>
+            <input
+              style={{ flex: 1, padding: 10, border: "none", outline: "none" }}
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              placeholder="Ask me anything..."
+            />
+            <button
+              style={{
+                backgroundColor: "#4caf50",
+                color: "#fff",
+                border: "none",
+                padding: "0 16px",
+                cursor: "pointer",
+              }}
+              onClick={sendMessage}
+            >
+              ▶
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
