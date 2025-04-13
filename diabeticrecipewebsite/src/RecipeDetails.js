@@ -1,35 +1,96 @@
-// RecipeDetails.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
+import { colors, fonts, effects, sharedStyles } from "./theme";
+ 
 const RecipeDetails = () => {
   const { name } = useParams();
+  const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
-
+ 
   useEffect(() => {
     fetch("/substitutes.json")
       .then((res) => res.json())
       .then((data) => {
         const match = data.find(
-          (item) => item.originalIngredientName.toLowerCase() === name.toLowerCase()
+          (item) =>
+            item.originalIngredientName.toLowerCase().replace(/\s+/g, "") ===
+            name.toLowerCase()
         );
         setRecipe(match);
       });
   }, [name]);
-
+ 
   if (!recipe) return <p style={{ padding: 20 }}>Loading or not found...</p>;
-
+ 
+  const styles = {
+    container: {
+      padding: "40px",
+      fontFamily: fonts.primary,
+      backgroundColor: colors.secondary,
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+    },
+    card: {
+      backgroundColor: "#fff",
+      borderRadius: effects.borderRadius,
+      boxShadow: effects.cardShadow,
+      padding: "30px",
+      maxWidth: "800px",
+      width: "100%",
+    },
+    title: {
+      fontSize: "26px",
+      fontWeight: "bold",
+      marginBottom: "10px",
+    },
+    detailRow: {
+      marginBottom: "12px",
+      lineHeight: "1.6",
+      color: colors.textDark,
+    },
+    highlight: {
+      fontWeight: "bold",
+    },
+    backButton: {
+      ...sharedStyles.backButton,
+      marginTop: "30px",
+      display: "inline-block",
+    },
+  };
+ 
   return (
-    <div style={{ padding: 30, fontFamily: "Arial, sans-serif" }}>
-      <h2>{recipe.originalIngredientName} ➡ {recipe.substituteIngredientName}</h2>
-      <p><strong>Substitute Recipe:</strong> {recipe.substituteRecipeName}</p>
-      <p><strong>Details:</strong> {recipe.substituteRecipeDetails}</p>
-      <p><strong>Key Ingredients:</strong> {recipe.keyIngredients}</p>
-      <p><strong>Original Nutrition:</strong> {recipe.calorieAndNutrientCompositionOriginal}</p>
-      <p><strong>Substitute Nutrition:</strong> {recipe.calorieAndNutrientCompositionSubstitute}</p>
-      <p><strong>Result:</strong> {recipe.results}</p>
-    </div>
+<div style={styles.container}>
+<div style={styles.card}>
+<h2 style={styles.title}>
+          {recipe.originalIngredientName} ➡ {recipe.substituteIngredientName}
+</h2>
+<div style={styles.detailRow}>
+<span style={styles.highlight}>Substitute Recipe:</span> {recipe.substituteRecipeName}
+</div>
+<div style={styles.detailRow}>
+<span style={styles.highlight}>Details:</span> {recipe.substituteRecipeDetails}
+</div>
+<div style={styles.detailRow}>
+<span style={styles.highlight}>Key Ingredients:</span> {recipe.keyIngredients}
+</div>
+<div style={styles.detailRow}>
+<span style={styles.highlight}>Original Nutrition:</span>{" "}
+          {recipe.calorieAndNutrientCompositionOriginal}
+</div>
+<div style={styles.detailRow}>
+<span style={styles.highlight}>Substitute Nutrition:</span>{" "}
+          {recipe.calorieAndNutrientCompositionSubstitute}
+</div>
+<div style={styles.detailRow}>
+<span style={styles.highlight}>Result:</span> {recipe.results}
+</div>
+<div style={styles.backButton} onClick={() => navigate("/home")}>
+          ← Back to Dashboard
+</div>
+</div>
+</div>
   );
 };
-
+ 
 export default RecipeDetails;
