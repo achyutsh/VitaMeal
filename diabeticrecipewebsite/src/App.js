@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import Pag2 from "./pag2";
-import Pag4 from "./pag4"; // ✅ this is your home screen
+import Pag4 from "./pag4";
 import Pag5 from "./pag5";
 import Pag6 from "./pag6";
 import './App.css';
 import RecipeDetails from "./RecipeDetails";
-
 
 // 🔐 Login Component
 function LoginScreen() {
@@ -25,11 +24,7 @@ function LoginScreen() {
       return;
     }
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("Signed up:", userCredential.user);
       alert("Signed up successfully!");
       navigate("/userinfo", { state: { email, password } });
@@ -40,11 +35,7 @@ function LoginScreen() {
 
   const handleSignIn = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Signed in:", userCredential.user);
       alert("Welcome back!");
       navigate("/home");
@@ -59,7 +50,7 @@ function LoginScreen() {
       minHeight: "100vh",
       margin: 0,
       padding: 0,
-      background: `url("/images/tangerine-newt-RgT22Ixcq4Y-unsplash.jpg") center/cover no-repeat`,
+      background: `url("/images/home.png") center/cover no-repeat`,
       fontFamily: "Arial, sans-serif",
       backgroundColor: "#111",
     },
@@ -96,6 +87,13 @@ function LoginScreen() {
       borderRadius: "20px",
       cursor: "pointer",
       fontWeight: "bold",
+    },
+    logo: {
+      height: "100px",
+      marginBottom: "20px",
+      borderRadius: "20px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+      animation: "fadeIn 2s ease forwards",
     },
     title: {
       fontSize: "2rem",
@@ -168,6 +166,10 @@ function LoginScreen() {
             Skip
           </button>
         </div>
+
+        {/* ✅ Logo with fade-in */}
+        <img src="/images/vitameal.jpeg" alt="VitaMeal Logo" style={styles.logo} />
+
         <h1 style={styles.title}>Welcome to VitaMeal</h1>
         <p style={styles.subtitle}>
           Best Diabetic Food Recommendation
@@ -217,7 +219,7 @@ function App() {
         <Route path="/home" element={<Pag4 />} />
         <Route path="/page5" element={<Pag5 />} />
         <Route path="/page6" element={<Pag6 />} />
-        <Route path="/:name" element={<RecipeDetails />} /> {/* 👈 Dynamic route for recipes */}
+        <Route path="/:name" element={<RecipeDetails />} />
       </Routes>
     </Router>
   );
