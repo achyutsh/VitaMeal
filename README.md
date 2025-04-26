@@ -61,29 +61,6 @@ Built using **React.js** and **Firebase** services.
 5. **Chatbot Assistant**  
    A floating chatbot is available to answer user queries interactively.
 
----
-
-## 📦 Setup Instructions
-
-```bash
-# Clone the repository
-git clone https://github.com/achyutsh/VitaMeal.git
-cd VitaMeal
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm start
-
-# Build for production
-npm run build
-
-# Deploy to Firebase Hosting
-firebase deploy
-```
-
----
 
 ## 🔥 Live Demo
 
