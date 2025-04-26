@@ -1,5 +1,5 @@
-VitaMeal 🍽️
-Diabetic Food Recommendation & Healthy Recipe App
+**VitaMeal 🍽️
+Diabetic Food Recommendation & Healthy Recipe App**
 
 🚀 Project Overview
 VitaMeal is a web application designed to recommend healthier food substitutes and quick diabetic-friendly recipes based on the user's diabetes type, physical condition, and food allergies.
