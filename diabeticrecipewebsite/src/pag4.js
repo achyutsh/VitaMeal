@@ -95,6 +95,10 @@ const Pag4 = () => {
     container: {
       fontFamily: fonts.primary,
       backgroundColor: colors.secondary,
+      backgroundImage: 'url("/images/home.png")',   // << Add this
+      backgroundSize: "cover",                      // << Make image cover full screen
+    backgroundPosition: "center",                  // << Center the image
+  backgroundRepeat: "no-repeat",
       padding: "30px",
       minHeight: "100vh",
       display: "grid",
