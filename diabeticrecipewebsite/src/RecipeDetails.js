@@ -20,6 +20,12 @@ const RecipeDetails = () => {
       });
   }, [name]);
 
+  const getStatisticImagePath = (ingredientName) => {
+    if (!ingredientName) return null;
+    const cleanedName = ingredientName.replace(/\s+/g, "");
+    return `${process.env.PUBLIC_URL}/images/${cleanedName}.png`;
+  };
+
   if (!recipe) return <p style={{ padding: 20 }}>Loading or not found...</p>;
 
   const styles = {
@@ -59,48 +65,60 @@ const RecipeDetails = () => {
       display: "inline-block",
       cursor: "pointer",
     },
+    statImage: {
+      marginTop: "30px",
+      textAlign: "center",
+    },
+    statImgTag: {
+      maxWidth: "100%",
+      borderRadius: effects.borderRadius,
+    },
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.title}>
-          {recipe.originalIngredientName} ➡ {recipe.substituteIngredientName || "Healthy Option"}
+          {recipe.originalIngredientName} ➞ {recipe.substituteIngredientName || "Healthy Option"}
         </h2>
 
         <div style={styles.detailRow}>
-          <span style={styles.highlight}>Substitute Recipe:</span>{" "}
-          {recipe.substituteRecipeName}
+          <span style={styles.highlight}>Substitute Recipe:</span> {recipe.substituteRecipeName}
         </div>
 
         <div style={styles.detailRow}>
-          <span style={styles.highlight}>Details:</span>{" "}
-          {recipe.substituteRecipeDetails}
+          <span style={styles.highlight}>Details:</span> {recipe.substituteRecipeDetails}
         </div>
 
         <div style={styles.detailRow}>
-          <span style={styles.highlight}>Key Ingredients:</span>{" "}
-          {recipe.keyIngredients}
+          <span style={styles.highlight}>Key Ingredients:</span> {recipe.keyIngredients}
         </div>
 
         <div style={styles.detailRow}>
-          <span style={styles.highlight}>Original Nutrition:</span>{" "}
-          {recipe.calorieAndNutrientCompositionOriginal}
+          <span style={styles.highlight}>Original Nutrition:</span> {recipe.calorieAndNutrientCompositionOriginal}
         </div>
 
         <div style={styles.detailRow}>
-          <span style={styles.highlight}>Substitute Nutrition:</span>{" "}
-          {recipe.calorieAndNutrientCompositionSubstitute}
+          <span style={styles.highlight}>Substitute Nutrition:</span> {recipe.calorieAndNutrientCompositionSubstitute}
         </div>
 
         <div style={styles.detailRow}>
-          <span style={styles.highlight}>Result:</span>{" "}
-          {recipe.results}
+          <span style={styles.highlight}>Result:</span> {recipe.results}
         </div>
 
-        <div style={styles.backButton} onClick={() => navigate("/home")}>
-          ← Back to Dashboard
-        </div>
+        {/* New: Statistic Image Section */}
+        {recipe.originalIngredientName && (
+          <div style={styles.statImage}>
+            <img 
+              src={getStatisticImagePath(recipe.originalIngredientName)} 
+              alt="Statistic chart for recipe" 
+              style={styles.statImgTag}
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+          </div>
+        )}
+
+        <div style={styles.backButton} onClick={() => navigate("/home")}>← Back to Dashboard</div>
       </div>
     </div>
   );
